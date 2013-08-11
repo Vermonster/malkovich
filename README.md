@@ -47,7 +47,7 @@ At this point, you may wish to run the `bootstrap`, described below.
 
 ## Stages
 
-For each stage, define a Capistrano task where you set a vaule for :stage and other values:
+For each stage, define a Capistrano task where you set a vaule for `:stage` and other values:
 
 ```rb
 task :qa do
@@ -65,17 +65,18 @@ task :dev do
 end
 ```
 
-Then invoke that task on the Capistrano command line before the primary task, e.g.:
+Then invoke a stage task on the Capistrano command line before any primary task, e.g.:
 
 ```bash
 
 $ cap dev bootstrap
-
 ```
 
 ## Bootstrap
 
-A bootstrap Capistrano task is provided to prepare a base image with installed Puppet. This is for Ubuntu 12.04 precise.  One practice is to run bootstrap once on a clean image, and then create a new EC2 image or Vagrant box from that. Then destroy the running machine and change your Vagrantfile to use the new image, also removing the shell provisioner.
+A bootstrap Capistrano task is provided to prepare a base image with installed Puppet. This is for Ubuntu 12.04 precise.
+
+One approach is to run bootstrap once on a clean image, and then create a new EC2 image or Vagrant box from that. Then destroy the running machine and change your Vagrantfile to use the new image, also removing the shell provisioner.
 
 Now you can spin up this new machine as a starting point for Puppet module development.
 

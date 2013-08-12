@@ -1,6 +1,7 @@
 Capistrano::Configuration.instance.load do
   _cset(:stage) { abort "please specify stage" }
 
+  set :application, 'application'
   set :user, 'ubuntu'
   set :use_sudo, false
   set(:deploy_to) { "/home/#{user}" }

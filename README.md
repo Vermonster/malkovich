@@ -105,11 +105,19 @@ will create a task called `puppet:web`, which when run will:
 
 ## Required values
 
-You must set `application` in your Capfile, and one or more stages. Every task requires a stage.
+You must define at least one stage.
 
 ## Default values
 
 Some default Capistrano values are set such as user. See defaults.rb for more. These work with the Vagrant shell provisioner and Canonical EC2 images.
+
+## Capistrano tasks
+
+In addition to the `puppet:` tasks defined in your Capfile, there are a couple of other useful tasks such as `uptime` and `upgrade`. View them all with:
+
+```bash
+$ cap -T
+```
 
 ## Example
 
@@ -151,14 +159,6 @@ class nginx {
 
 ```bash
 $ cap qa puppet:web
-```
-
-## Capistrano tasks
-
-In addition to the `puppet:` tasks defined in your Capfile, there are a couple of other useful tasks such as `uptime` and `upgrade`. View them all with:
-
-```bash
-$ cap -T
 ```
 
 ## Contributing

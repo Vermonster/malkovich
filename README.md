@@ -30,15 +30,24 @@ Then create the shell provisioner script in .vagrant/ with:
 $ cap vagrant
 ```
 
-Then, inside the config block in your Vagrantfile add:
+The `vagrant` task by default assumes your ssh key is in `~/.ssh/id_rsa`.  It will attempt to create a public key file at `~/.ssh/id_rsa.pub` if one doesn't already exist. The key filenames can be set with `private_key_filename` and `public_key_filename`.
+
+After the shell provisioner is written, inside the config block in your Vagrantfile add:
 
 ```rb
 config.vm.provision :shell, :path => '.vagrant/shell_provisioner'
 ```
 
-You might also set the network address for the VM so you can define the server in the Capfile. Otherwise you can get it later from inside the VM using `ifconfig`.
+You might also set the network address for the VM so you can define the server in the Capfile, for example:
+
+```rb
+config.vm.network :private_network, ip: "192.168.101.101"
+```
+
+Otherwise you can get it later from inside the VM using `ifconfig`.
 
 Finally, boot up your Vagrant VM for the first time:
+
 ```bash
 $ vagrant up
 ```

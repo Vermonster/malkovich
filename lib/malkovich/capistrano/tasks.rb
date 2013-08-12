@@ -40,9 +40,9 @@ Capistrano::Configuration.instance.load do
     cmd = <<-SH
   echo 'deb http://apt.puppetlabs.com precise main dependencies' | sudo tee /etc/apt/sources.list.d/puppetlabs.list;
   sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 4BD6EC30;
-  sudo apt-get update;
+  sudo #{apt_get_cmd} update;
   sudo #{apt_get_cmd} upgrade;
-  sudo #{apt_get_cmd} install #{essential_packages} #{bonus_packages} #{puppet_packages};
+  sudo #{apt_get_cmd} install #{packages};
   sudo gem install bundler --no-ri --no-rdoc
   SH
     run cmd
@@ -51,7 +51,7 @@ Capistrano::Configuration.instance.load do
   desc "Upgrade packages"
   task :upgrade do
     cmd = <<-SH
-  sudo apt-get update;
+  sudo #{apt_get_cmd} update;
   sudo #{apt_get_cmd} upgrade;
   SH
     run cmd

@@ -24,4 +24,6 @@ Capistrano::Configuration.instance.load do
   set :bonus_packages, "vim tmux ack-grep"
 
   set :puppet_packages, "puppet ruby1.8 libopenssl-ruby ruby rubygems"
+
+  set :packages, [essential_packages.squeeze, bonus_packages, puppet_packages].join(" ")
 end

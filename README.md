@@ -6,7 +6,7 @@ This is a work in progress. Currently targets Ubuntu 12.04.
 
 ## Installation
 
-In your Capfile add
+In your `Capfile` add
 
 ```rb
 require 'malkovich/capistrano'
@@ -38,7 +38,7 @@ After the shell provisioner is written, inside the config block in your Vagrantf
 config.vm.provision :shell, :path => '.vagrant/shell_provisioner'
 ```
 
-You might also set the network address for the VM so you can define the server in the Capfile, for example:
+You might also set the network address for the VM so you can define the server in `Capfile`, for example:
 
 ```rb
 config.vm.network :private_network, ip: "192.168.101.101"
@@ -105,6 +105,7 @@ You must define at least one stage for most tasks, except for example `vagrant`.
 ## Default values
 
 Some default Capistrano values are set such as user. See defaults.rb for more.
+Set your own values in `Capfile`.
 These work with the Vagrant shell provisioner and Canonical EC2 images.
 
 ## Capistrano tasks

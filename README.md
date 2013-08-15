@@ -24,7 +24,7 @@ First, initialize a VM with Ubuntu Precise:
 $ vagrant init precise32 http://files.vagrantup.com/precise32.box
 ```
 
-Then create the shell provisioner script in .vagrant/ with:
+Then create the shell provisioner script in `.vagrant/` with:
 
 ```bash
 $ cap vagrant

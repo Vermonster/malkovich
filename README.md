@@ -1,6 +1,6 @@
 # Malkovich
 
-Facilitates developing and deploying Puppet modules with Capistrano. Also includes a convenience for Vagrant.
+Makes it reasonably easy to develop and deploy Puppet modules using Capistrano. Also includes a convenience for Vagrant.
 
 This is a work in progress. Currently targets Ubuntu 12.04.
 
@@ -70,7 +70,7 @@ You can make a stage for your Vagrant VM:
 ```rb
 task :dev do
   set :stage, 'dev'
-  server '192.168.1.42', :app
+  server '192.168.101.101', :app
 end
 ```
 
@@ -85,35 +85,31 @@ $ cap dev bootstrap
 
 A bootstrap Capistrano task is provided to prepare a base image with installed Puppet. This is for Ubuntu 12.04 precise.
 
-One approach is to run bootstrap once on a clean image, and then create a new EC2 image or Vagrant box from that. Then destroy the running machine and change your Vagrantfile to use the new image, also removing the shell provisioner.
+One approach is to run bootstrap once on a clean image, and then create a new EC2 image or Vagrant box from that.
+Then destroy the running machine and change your Vagrantfile to use the new image, also removing the shell provisioner.
 
-Now you can spin up this new machine as a starting point for Puppet module development.
+Now you can use this new image as a starting point for Puppet module development.
 
 ## Puppet tasks
 
-Use the `define_puppet_tasks` method in your Capfile to match up Capistrano roles with Puppet manifests. E.g., :
+For every `.pp` file in `puppet/manifests` a Capistrano task will be created in the `puppet` namespace.
+E.g., `puppet/manifests/web.pp` will result in the task `puppet:web` that can be run on stages.
+When `puppet:web` is run it will upload `puppet/` to the servers with the `:web` role and use `puppet apply` to apply the `web` manifest.
 
-```rb
-define_puppet_tasks :web
-```
-
-will create a task called `puppet:web`, which when run will:
-
-* Upload the directory `puppet/` to the servers with the role `:web`
-    * Assumes `puppet/modules` is the path to the modules
-* Use the `puppet` command on the servers to apply the manifest `puppet/manifests/web.pp`
+This assumes `puppet/modules` is the path to the modules the manifest includes.
 
 ## Required values
 
-You must define at least one stage.
+You must define at least one stage for most tasks, except for example `vagrant`.
 
 ## Default values
 
-Some default Capistrano values are set such as user. See defaults.rb for more. These work with the Vagrant shell provisioner and Canonical EC2 images.
+Some default Capistrano values are set such as user. See defaults.rb for more.
+These work with the Vagrant shell provisioner and Canonical EC2 images.
 
 ## Capistrano tasks
 
-In addition to the `puppet:` tasks defined in your Capfile, there are a couple of other useful tasks such as `uptime` and `upgrade`. View them all with:
+There are some other tasks such as `uptime` and `upgrade`. View them all with:
 
 ```bash
 $ cap -T
@@ -127,14 +123,10 @@ $ cap -T
 load 'deploy'
 require 'malkovich/capistrano'
 
-set :application, 'myapp'
-
 task :qa do
   set :stage, 'qa'
   server 'qa.myapp.com', :web
 end
-
-define_puppet_tasks :web
 ```
 
 * puppet/manifests/web.pp

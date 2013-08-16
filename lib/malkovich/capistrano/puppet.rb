@@ -4,7 +4,7 @@ Capistrano::Configuration.instance.load do
       desc "apply #{manifest} manifest to server with #{manifest} role"
       task manifest, :roles => manifest do
         upload "puppet", deploy_to, :via => :scp, :recursive => true
-        run "cd #{deploy_to}/puppet && sudo puppet apply #{puppet_opts} manifests/#{manifest}.pp"
+        run "cd #{deploy_to}/puppet && sudo #{_facter_envs} puppet apply #{puppet_opts} manifests/#{manifest}.pp"
       end
     end
   end

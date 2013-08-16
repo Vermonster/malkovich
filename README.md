@@ -30,7 +30,9 @@ Then create the shell provisioner script in `.vagrant/` with:
 $ cap vagrant
 ```
 
-The `vagrant` task by default assumes your ssh key is in `~/.ssh/id_rsa`.  It will attempt to create a public key file at `~/.ssh/id_rsa.pub` if one doesn't already exist. The key filenames can be set with `private_key_filename` and `public_key_filename`.
+The `vagrant` task by default assumes your ssh key is in `~/.ssh/id_rsa`.
+It will attempt to create a public key file at `~/.ssh/id_rsa.pub` if one doesn't already exist.
+The key filenames can be set with `private_key_filename` and `public_key_filename`.
 
 After the shell provisioner is written, inside the config block in your Vagrantfile add:
 
@@ -97,6 +99,21 @@ E.g., `puppet/manifests/web.pp` will result in the task `puppet:web` that can be
 When `puppet:web` is run it will upload `puppet/` to the servers with the `:web` role and use `puppet apply` to apply the `web` manifest.
 
 This assumes `puppet/modules` is the path to the modules the manifest includes.
+
+## Facts
+
+Specifying a stage, a server and a role is enough to let you run your puppet manifests on your server, but in many cases it is useful to make arbitrary dynamic values available to your puppet modules when they run on the server.
+The `fact` method makes this easy. For example,
+
+```rb
+task :qa do
+  set :stage, 'qa'
+  server 'qa.myapp.com', :app, :db
+  fact :hostname, 'qa.myapp.com'
+end
+```
+
+will make a `$hostname` variable available in your puppet manifests. This is achieved with Facter environment variables.
 
 ## Required values
 

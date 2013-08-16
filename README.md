@@ -6,11 +6,19 @@ This is a work in progress. Currently targets Ubuntu 12.04.
 
 ## Installation
 
-In your `Capfile` add
+Add the gem to your Gemfile:
+
+```rb
+gem 'malkovich'
+```
+
+and install with the bundle command. Then in your `Capfile` add
 
 ```rb
 require 'malkovich/capistrano'
 ```
+
+If you don't have `Capfile` copy it from the example below.
 
 ## Vagrant
 

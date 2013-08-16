@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.description   = %q{Capistrano tasks and settings for Puppet, Vagrant/EC2, Ubuntu}
   spec.summary   = %q{Capistrano tasks and settings for Puppet, Vagrant/EC2, Ubuntu}
 
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/vermonster/malkovich"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)

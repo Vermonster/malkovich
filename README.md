@@ -144,16 +144,13 @@ require 'malkovich/capistrano'
 task :qa do
   set :stage, 'qa'
   server 'qa.myapp.com', :web
+  fact :hostname, 'qa.myapp.com'
 end
 ```
 
 * puppet/manifests/web.pp
 
 ```puppet
-Exec {
-  path => "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-}
-
 include nginx
 ```
 
@@ -161,7 +158,20 @@ include nginx
 
 ```puppet
 class nginx {
-  /* ... */
+  file {
+    "/etc/nginx/nginx.conf":
+      content => template('nginx/nginx.conf.erb')
+  }
+}
+```
+
+* puppet/modules/nginx/templates/nginx.conf.erb
+
+```puppet
+http {
+  server {
+    server_name <%= @hostname %>; #Puppet facts become Ruby instance variables in ERB
+  }
 }
 ```
 
@@ -170,11 +180,3 @@ class nginx {
 ```bash
 $ cap qa puppet:web
 ```
-
-## Contributing
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request

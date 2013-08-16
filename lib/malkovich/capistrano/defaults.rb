@@ -26,4 +26,6 @@ Capistrano::Configuration.instance.load do
   set :puppet_packages, "puppet ruby1.8 libopenssl-ruby ruby rubygems"
 
   set :packages, [essential_packages.squeeze, bonus_packages, puppet_packages].join(" ")
+
+  set :puppet_opts, '--verbose --modulepath=modules'
 end

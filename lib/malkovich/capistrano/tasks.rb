@@ -35,25 +35,34 @@ Capistrano::Configuration.instance.load do
       run "uptime"
   end
 
-  desc "Upgrade packages and install puppet and build essentials"
-  task :bootstrap do
-    cmd = <<-SH
-  echo 'deb http://apt.puppetlabs.com precise main dependencies' | sudo tee /etc/apt/sources.list.d/puppetlabs.list;
-  sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 4BD6EC30;
-  sudo #{apt_get_cmd} update;
-  sudo #{apt_get_cmd} upgrade;
-  sudo #{apt_get_cmd} install #{packages};
-  sudo gem install bundler --no-ri --no-rdoc
-  SH
-    run cmd
-  end
+  namespace :bootstrap do
+    desc "Install pupplabs deb key"
+    task :setup_key do
+      cmd = <<-SH
+    echo 'deb http://apt.puppetlabs.com #{ubuntu_version} main dependencies' | sudo tee /etc/apt/sources.list.d/puppetlabs.list;
+    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 4BD6EC30;
+    SH
+      run cmd
+    end
 
-  desc "Upgrade packages"
-  task :upgrade do
-    cmd = <<-SH
-  sudo #{apt_get_cmd} update;
-  sudo #{apt_get_cmd} upgrade;
-  SH
-    run cmd
+    desc "Upgrade packages"
+    task :upgrade do
+      cmd = <<-SH
+    sudo apt-get update;
+    sudo #{apt_get_cmd} upgrade
+    SH
+      run cmd
+    end
+
+    desc "Upgrade packages and install puppet and build essentials"
+    task :default do
+      bootstrap.setup_key
+      bootstrap.upgrade
+      cmd = <<-SH
+    sudo #{apt_get_cmd} install #{packages};
+    sudo gem install bundler --no-ri --no-rdoc
+    SH
+      run cmd
+    end
   end
 end
